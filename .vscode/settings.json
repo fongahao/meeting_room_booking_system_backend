@@ -1,0 +1,21 @@
+{
+  // 1. 保存时自动格式化
+  "editor.formatOnSave": true,
+  // 2. 指定默认格式化器为 Prettier 插件
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // 3. 保存时自动应用 ESLint 修复
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  // 4. 针对不同语言分别指定格式化器
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.semi": false
+}
