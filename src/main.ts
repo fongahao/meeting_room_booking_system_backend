@@ -3,10 +3,12 @@ import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { FormatResponseInterceptor } from './format-reponse.interceptor'
+import { InvokeRecordInterceptor } from './invoke-record.interceptor'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   app.useGlobalPipes(new ValidationPipe())
   app.useGlobalInterceptors(new FormatResponseInterceptor())
+  app.useGlobalInterceptors(new InvokeRecordInterceptor())
   const configService = app.get(ConfigService)
   // 开启 CORS，并只允许来自 http://localhost:3001 的请求
   app.enableCors({
