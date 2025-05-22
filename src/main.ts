@@ -5,12 +5,14 @@ import { ConfigService } from '@nestjs/config'
 import { FormatResponseInterceptor } from './format-reponse.interceptor'
 import { InvokeRecordInterceptor } from './invoke-record.interceptor'
 import { UnloginFilter } from './unlogin.filter'
+import { CustomExceptionFilter } from './custom-exception.filter'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   app.useGlobalPipes(new ValidationPipe())
   app.useGlobalInterceptors(new FormatResponseInterceptor())
   app.useGlobalInterceptors(new InvokeRecordInterceptor())
   app.useGlobalFilters(new UnloginFilter())
+  app.useGlobalFilters(new CustomExceptionFilter())
   const configService = app.get(ConfigService)
   // 开启 CORS，并只允许来自 http://localhost:3001 的请求
   app.enableCors({
@@ -20,6 +22,5 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization',
   })
   await app.listen(configService.get('nest_server_port') as string)
-  // await app.listen(process.env.PORT ?? 3000)
 }
 bootstrap()
