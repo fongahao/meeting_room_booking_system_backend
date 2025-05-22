@@ -242,4 +242,37 @@ export class UserService {
       return '用户信息修改成功'
     }
   }
+
+  async freezeUserById(id: number) {
+    const user = (await this.userRepository.findOneBy({
+      id,
+    })) as User
+
+    user.isFrozen = true
+    await this.userRepository.save(user)
+  }
+
+  async findUsersByPage(pageNo: number, pageSize: number) {
+    const skipCount = (pageNo - 1) * pageSize
+
+    const [users, totalCount] = await this.userRepository.findAndCount({
+      select: [
+        'id',
+        'username',
+        'nickName',
+        'email',
+        'phoneNumber',
+        'isFrozen',
+        'headPic',
+        'createTime',
+      ],
+      skip: skipCount,
+      take: pageSize,
+    })
+
+    return {
+      users,
+      totalCount,
+    }
+  }
 }
