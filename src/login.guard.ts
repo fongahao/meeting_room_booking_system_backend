@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Request } from 'express'
 import { Observable } from 'rxjs'
 import { Permission } from './user/entities/permission.entity'
-
+import { UnLoginException } from './unlogin.filter'
 interface JwtUserData {
   userId: number
   username: string
@@ -68,7 +68,7 @@ export class LoginGuard implements CanActivate {
     } catch (e) {
       // this.logger.debug('🚀 ~ LoginGuard ~ e:', e)
 
-      throw new UnauthorizedException('token 失效，请重新登录')
+      throw new UnLoginException()
     }
   }
 }
