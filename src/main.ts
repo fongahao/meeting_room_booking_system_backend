@@ -7,8 +7,12 @@ import { InvokeRecordInterceptor } from './invoke-record.interceptor'
 // import { UnloginFilter } from './unlogin.filter'
 import { CustomExceptionFilter } from './custom-exception.filter'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { NestExpressApplication } from '@nestjs/platform-express'
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  app.useStaticAssets('uploads', {
+    prefix: '/uploads',
+  })
   app.useGlobalPipes(new ValidationPipe())
   app.useGlobalInterceptors(new FormatResponseInterceptor())
   app.useGlobalInterceptors(new InvokeRecordInterceptor())
@@ -25,7 +29,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
   // 开启 CORS，并只允许来自 http://localhost:3001 的请求
   app.enableCors({
-    origin: 'http://localhost:3001', // 或者用 ['http://localhost:3001', 'http://yourdomain.com']
+    origin: ['http://localhost:3001', 'http://localhost:3002'], // 或者用 ['http://localhost:3001', 'http://yourdomain.com']
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true, // 如果前端需要发送或接收 Cookie
     allowedHeaders: 'Content-Type, Authorization',
